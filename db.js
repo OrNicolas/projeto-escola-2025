@@ -1,21 +1,21 @@
 const { Pool } = require('pg');
 
 
-const bd = new Pool(
-    {
-        user: 'postgres', //Usuario cadastrado no banco de dados
-        host: 'localhost', //Servidor do banco de dados
-        database: 'projeto_2025', //Nome do banco de dados
-        password: 'admin', //Senha do banco de dados
-        port: 5432, //Porta padrao do postgresql
-    }
-);
-
 // const bd = new Pool(
 //     {
-//    connectionString: process.env.DATABASE_URL
+//         user: 'postgres', //Usuario cadastrado no banco de dados
+//         host: 'localhost', //Servidor do banco de dados
+//         database: 'projeto_2025', //Nome do banco de dados
+//         password: 'admin', //Senha do banco de dados
+//         port: 5432, //Porta padrao do postgresql
 //     }
 // );
+
+const bd = new Pool(
+    {
+   connectionString: process.env.DATABASE_URL
+    }
+);
 
 // const pool = new Pool({
 //     // ⚠️ CONFIRME QUE ESTES VALORES SÃO IDÊNTICOS AOS DO SEU BANCO DE DADOS ⚠️

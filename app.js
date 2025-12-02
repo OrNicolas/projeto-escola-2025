@@ -28,6 +28,7 @@ app.use(session({
     resave: false, // não salvar a sessão se não houver modificações
     saveUninitialized: false,
     cookie :{maxAge: 1000 * 60 * 60 * 24,
+        secure: true
     } // salvar sessões não inicializadas
 }));
 app.set('trust proxy', 1)
