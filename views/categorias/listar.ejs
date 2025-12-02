@@ -1,0 +1,111 @@
+<%- include ('../includes/header.ejs', {titulo: 'Lista de categorias' }) %>
+    <style>
+        .bg-batman-dark {
+            background-color: #1a1a1a;
+        }
+
+        .text-batman-yellow {
+            color: #FFD700;
+        }
+
+        .bg-batman-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .hover\:bg-batman-yellow-dark:hover {
+            background-color: #e0b400;
+        }
+    </style>
+
+    <main class="min-h-screen bg-batman-dark text-white p-6 md:p-10">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-extrabold border-b-4 border-batman-yellow pb-3 mb-8 text-batman-yellow">
+                Lista de Categorias
+            </h2>
+
+            <form action="/categorias/listar" method="get"
+                class="flex flex-wrap items-end gap-4 p-4 rounded-xl shadow-2xl bg-gray-900 mb-10">
+
+                <div class="flex-grow">
+                    <input type="text" name="busca" placeholder="Buscar por nome da categoria"
+                        class="w-full p-3 rounded-lg border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150">
+                </div>
+
+                <div>
+                    <select name="ordem"
+                        class="p-3 rounded-lg border-2 border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150">
+                        <option value="nome">Ordenar por Nome</option>
+                        <option value="ativo">Ordenar por Status</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select name="ativo"
+                        class="p-3 rounded-lg border-2 border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150">
+                        <option value="">Todos</option>
+                        <option value="true">Ativo</option>
+                        <option value="false">Não Ativo</option>
+                    </select>
+                </div>
+
+                <button type="submit"
+                    class="p-3 px-8 rounded-lg bg-batman-yellow text-gray-900 font-bold shadow-lg hover:bg-batman-yellow-dark transition duration-200">
+                    Buscar
+                </button>
+            </form>
+
+            <a href="/categorias/novo"
+                class="inline-block p-3 px-8 rounded-lg bg-batman-yellow text-gray-900 font-bold shadow-lg hover:bg-batman-yellow-dark transition duration-200 mb-10">Adicionar
+                Categoria</a>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-10">
+                <% if (categoria.length===0) { %>
+                    <div class="col-span-full text-center p-10 bg-gray-900 rounded-xl">
+                        <p class="text-xl text-gray-400">Nenhuma categoria encontrada com os filtros atuais.</p>
+                    </div>
+                    <% } %>
+
+                        <% for (let categorias of categoria) { %>
+                            <div
+                                class="bg-gray-800 rounded-xl overflow-hidden shadow-2xl border-4 border-gray-700 hover:border-batman-yellow transition duration-300 transform hover:scale-[1.02]">
+
+                                <div
+                                    class="w-full h-48 flex items-center justify-center bg-gray-700 text-gray-400 text-center text-xl p-4">
+                                    [Categoria: <%= categorias.nome %>]
+                                </div>
+
+                                <div class="p-5">
+                                    <h3 class="text-2xl font-bold mb-2 text-batman-yellow">
+                                        <%= categorias.nome %>
+                                    </h3>
+
+                                    <p class="text-xl text-gray-300">
+                                        Status: <span
+                                            class="<%= categorias.ativo ? 'text-green-400' : 'text-red-400' %> font-semibold">
+                                            <%= categorias.ativo==true ? 'Ativo' : 'Não Ativo' %>
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="p-4 border-t border-gray-700 flex justify-end space-x-3">
+                                    <a href="/categorias/editar/<%= categorias.id_categoria%>"
+                                        class="py-2 px-4 rounded-lg bg-gray-700 text-batman-yellow font-medium hover:bg-gray-600 transition duration-200">
+                                        Editar
+                                    </a>
+                                    <form action="/categorias/excluir/<%= categorias.id_categoria%>" method="post">
+                                        <button type="submit"
+                                            class="py-2 px-4 rounded-lg text-white bg-red-700 font-medium hover:bg-red-800 transition duration-200"
+                                            onclick="return confirm('Tem certeza que deseja excluir a categoria: <%= categorias.nome %>?');">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+            </section>
+
+
+        </div>
+    </main>
+    <%- include ('../includes/footer.ejs') %>

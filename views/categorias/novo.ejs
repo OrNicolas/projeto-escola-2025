@@ -1,0 +1,67 @@
+<%- include ('../includes/header.ejs', {titulo: 'Nova Categoria' }) %>
+
+    <style>
+        /*
+        Atenção: Mudei os nomes das classes de 'batman-dark' para 'admin-dark' 
+        e 'batman-yellow' para 'admin-yellow' no código HTML.
+        Se você estiver usando Tailwind JIT e quiser manter "batman",
+        certifique-se de que essas cores estão no seu tailwind.config.js.
+        */
+        .bg-admin-dark {
+            background-color: #1a1a1a;
+        }
+
+        .text-admin-yellow {
+            color: #FFD700;
+        }
+
+        .bg-admin-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .hover\:bg-admin-yellow-dark:hover {
+            background-color: #e0b400;
+        }
+
+        .bg-admin-save {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .hover\:bg-admin-save-dark:hover {
+            background-color: #e0b400;
+        }
+    </style>
+
+    <main class="min-h-screen bg-admin-dark text-white p-6 md:p-10">
+        <div class="max-w-3xl mx-auto">
+
+            <h2 class="text-4xl font-extrabold border-b-4 border-admin-yellow pb-3 mb-8 text-admin-yellow">
+                Adicionar Nova Categoria
+            </h2>
+
+            <form action="/categorias/novo" method="post" id="categoryForm"
+                class="space-y-6 p-8 rounded-xl shadow-2xl bg-gray-900 border border-gray-700">
+
+                <div class="space-y-1">
+                    <label for="nome" class="block text-sm font-medium text-gray-300">Nome da Categoria:</label>
+                    <input type="text" name="nome" required
+                        class="w-full p-3 rounded-lg border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-admin-yellow focus:border-admin-yellow transition duration-150 solid rounded-lg px-4 py-2">
+                </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="submit"
+                        class="py-3 px-8 flex items-center justify-center rounded-lg bg-admin-yellow text-gray-900 font-bold shadow-xl hover:bg-admin-yellow-dark transition duration-300 transform hover:scale-105">
+                        Cadastrar Categoria
+                    </button>
+
+                    <a href="/categorias/listar"
+                        class="py-3 px-8 flex items-center justify-center rounded-lg text-white bg-gray-700 font-medium hover:bg-gray-600 transition duration-200 shadow-md">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+<%- include ('../includes/footer.ejs') %>

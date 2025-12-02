@@ -1,0 +1,101 @@
+<%- include ('../includes/header.ejs', {titulo: 'Novo Relatório'}) %>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Relatório</title>
+    <link rel="stylesheet" href="/css/styles.css"> 
+    
+    <style>
+        body {
+            background-color: #3e3e3e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .container-relatorio {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #000000;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .container-relatorio h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffc800;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffc800;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ffcc00;
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-submit:hover {
+            background-color: #c59d00;
+            transform: scaleY(1.05);
+            transform: scaleX(1.05);
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="content-wrapper">
+
+    <div class="container-relatorio">
+        <h1>➕ Criar Novo Relatório</h1>
+        
+        <form action="/relatorios" method="POST">
+            
+            <div class="form-group">
+                <label for="titulo">Título do Relatório:</label>
+                <input type="text" id="titulo" name="titulo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data">Data de Emissão:</label>
+                <input type="date" id="data" name="data" value="<%= typeof dataAtual !== 'undefined' ? dataAtual : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="conteudo">Conteúdo Detalhado:</label>
+                <textarea id="conteudo" name="conteudo" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Salvar Relatório</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
+<%- include ('../includes/footer.ejs') %>

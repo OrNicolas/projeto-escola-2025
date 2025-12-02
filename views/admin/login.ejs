@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tela de Login</title>
+</head>
+
+<body class="bg-black text-white font-sans">
+
+    <section class="relative h-[100vh] flex items-center justify-center text-center bg-cover bg-center w-full"
+        style="background-image: url('https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/00c780d0-015e-411e-af19-60745c5ce92f/0e6c67fe69273009cbfa8bd69c8df68ff690baa3.jpg?host=wbd-images.prod-vod.h264.io&partner=beamcom');">
+
+        <!-- Overlay escuro para melhorar contraste -->
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+        <div class="relative max-w-md w-11/12 mx-auto p-8 bg-black bg-opacity-70 border border-yellow-500 rounded-lg shadow-[0_0_25px_#facc15] backdrop-blur-sm">
+
+            <h1 class="text-4xl font-extrabold text-yellow-400 mb-6 tracking-wider drop-shadow-lg">
+                Login BatPapel
+            </h1>
+
+            <form action="/admin/login" method="POST" class="space-y-4">
+
+                <div>
+                    <label class="block text-yellow-400 text-sm font-bold mb-2">Usuário</label>
+                    <input type="email" name="email" placeholder="Digite seu Bat email" required
+                        class="shadow-sm border border-yellow-600 bg-black bg-opacity-40 rounded w-full py-2 px-3 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                </div>
+
+                <div>
+                    <label class="block text-yellow-400 text-sm font-bold mb-2">Senha</label>
+                    <input type="password" name="senha" placeholder="Digite sua Bat senha" required
+                        class="shadow-sm border border-yellow-600 bg-black bg-opacity-40 rounded w-full py-2 px-3 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                </div>
+
+                <button type="submit"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded w-full shadow-[0_0_15px_#facc15] transition-all duration-300">
+                    Entrar na BatCaverna
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <!-- CORREÇÃO: Usar um operador ternário ou 'typeof' para verificar se a variável existe e não é null/undefined -->
+                <% if (typeof mensagem !== 'undefined' && mensagem) { %>
+                    <p class="text-red-400 text-sm font-semibold drop-shadow">
+                        <%= mensagem %>
+                    </p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

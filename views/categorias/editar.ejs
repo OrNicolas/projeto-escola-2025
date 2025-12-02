@@ -1,0 +1,65 @@
+<%- include ('../includes/header.ejs', {titulo: 'Editar Categoria' }) %>
+
+    <style>
+        .bg-batman-dark {
+            background-color: #1a1a1a;
+        }
+
+        .text-batman-yellow {
+            color: #FFD700;
+        }
+
+        .bg-batman-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .hover\:bg-batman-yellow-dark:hover {
+            background-color: #e0b400;
+        }
+    </style>
+
+    <main class="min-h-screen bg-batman-dark text-white p-6 md:p-10 mb-20">
+        <div class="max-w-3xl mx-auto">
+
+            <h2 class="text-4xl font-extrabold border-b-4 border-batman-yellow pb-3 mb-8 text-batman-yellow">
+                Editar Categoria: <%= categoria.nome %>
+            </h2>
+
+            <form action="/categorias/editar/<%= categoria.id_categoria %>" method="post"
+                class="space-y-6 p-8 rounded-xl shadow-2xl bg-gray-900 border border-gray-700">
+
+                <div class="space-y-1">
+                    <label for="nome" class="block text-sm font-medium text-gray-300">Nome da Categoria:</label>
+                    <input type="text" name="nome" value="<%= categoria.nome %>" required
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="ativo" class="block text-sm font-medium text-gray-300">Status:</label>
+                    <select name="ativo" required
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2 text-gray-300">
+                        <option value="TRUE" <% if (categoria.ativo==true || categoria.ativo=='t' ||
+                            categoria.ativo=='TRUE' || categoria.ativo==1) { %> selected <% } %>>Ativo</option>
+                        <option value="FALSE" <% if (categoria.ativo==false || categoria.ativo=='f' ||
+                            categoria.ativo=='FALSE' || categoria.ativo==0) { %> selected <% } %>>Inativo</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="submit"
+                        class="py-3 px-8 flex items-center justify-center rounded-lg bg-batman-yellow text-gray-900 font-bold shadow-xl hover:bg-batman-yellow-dark transition duration-300 transform hover:scale-105">
+                        Salvar Alterações
+                    </button>
+
+                    <a href="/categorias/listar"
+                        class="py-3 px-8 flex items-center justify-center rounded-lg text-white bg-gray-700 font-medium hover:bg-gray-600 transition duration-200 shadow-md">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <%- include ('../includes/footer.ejs') %>
