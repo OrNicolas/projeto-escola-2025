@@ -1,7 +1,6 @@
 <%- include ('../includes/header.ejs', {titulo: 'Dashboard' }) %>
     <main class="w-full px-4 bg-gray-900 min-h-screen">
-        <h2 class="text-2xl font-semibold bg-gray-700 text-yellow-400 py-4 shadow-lg mb-4 rounded-b-lg">
-            Dashboard - Gerenciamento de Estoque
+        <h2 class="text-2xl font-semibold bg-gray-700 text-yellow-400 py-4 shadow-lg mb-4 rounded-b-lg text-center">Dashboard - Gerenciamento de Estoque
         </h2>
 
         <section class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4 mb-8">
@@ -234,7 +233,6 @@
             }
 
             function atualizarContadorMovimentacoes() {
-                // CORREÇÃO: Usar a variável qMov injetada do EJS
                 document.getElementById('totalMovimentacoesGeral').textContent = qMov; 
             }
 

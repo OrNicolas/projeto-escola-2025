@@ -101,14 +101,12 @@
                                         <tr>
                                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
     <% 
-        /* 1. Obtém a string do banco (ex: "2025-12-09 08:22:25" ) */
+        
         const dataString = mov.data_movimentacao; 
 
-        /* 2. Adiciona o offset do fuso horário brasileiro (UTC-3) à string. 
-           Isso força o JS a interpretar o horário como local. */
-        const dataComOffset = dataString + ' -03:00'; 
+        
+        const dataComOffset = dataString + '-00:00'; 
 
-        /* 3. Cria o objeto Date usando a string corrigida */
         const dataMovimentacao = new Date(dataComOffset); 
 
         const options = {

@@ -6,41 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área Administrativa-Sistema Escolar - <%=titulo%>
     </title>
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="/CSS/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <link rel="stylesheet" href="/CSS/style.css">
-
 </head>
 
-<body class="">
-
-    <header class="bg-black sticky top-0 z-50 shadow-xl p-4">
+<body class="bg-gray-900">
+    <header class="bg-black sticky top-0 z-50 shadow-xl p-1.5 w-full"> 
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            
             <div class="flex items-center">
-
                 <h1 class="text-2xl font-bold text-yellow-400 ml-2">BatPapel</h1>
             </div>
-            <nav class="space-x-6">
-                <a href="/admin/dashboard" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="/img/pngegg.png" alt="" class="h-5 mt-0.5">Início</div></a></a>
-                <a href="/sobre" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="https://icones.pro/wp-content/uploads/2021/05/icone-d-information-grise.png" alt="" class="h-5 mt-0.5">Sobre</div></a>
-                <a href="/produtos/listar" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="https://icones.pro/wp-content/uploads/2021/05/icone-de-panier-gris.png" alt="" class="h-5 mt-0.5">Produtos</div></a>
-                <a href="/categorias/listar" class="text-yellow-400 hover:text-white transition inline-block">
-                    <div class="flex gap-1"><img
-                            src="https://images.icon-icons.com/2483/PNG/512/document_category_icon_149943.png" alt=""
-                            class="h-5 mt-0.5">Categorias</div>
-                </a>
-                <a href="/usuarios/listar" class="text-yellow-400 hover:text-white transition inline-block">
-                    <div class="flex gap-1"><img src="https://images.icon-icons.com/2483/PNG/512/user_icon_149851.png"
-                            alt="" class="h-5 mt-0.5">Usuarios</div>
-                </a>
-                <a href="/admin/logout"
-                    class="text-yellow-400 hover:text-white transition hover:bg-red-700 hover:text-black px-8 rounded-full py-2 mb-8 uppercase">Sair</a>
-            </nav>
-        </div>
 
+            <button id="menu-toggle" class="text-yellow-400 focus:outline-none z-50">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+
+            <nav id="navbar-menu"
+                class="hidden flex-col space-y-4 absolute top-[4.7rem] right-0 w-64 bg-gray-800 p-4 shadow-lg items-start border-t border-yellow-400">
+                
+                <a href="/admin/dashboard" class="text-yellow-400 hover:text-white transition text-lg w-full p-2 hover:bg-black rounded">
+                    <div class="flex gap-2 items-center"><img src="/img/pngegg.png" alt="" class="h-5">Início</div>
+                </a>
+                <a href="/sobre" class="text-yellow-400 hover:text-white transition text-lg w-full p-2 hover:bg-black rounded">
+                    <div class="flex gap-2 items-center"><img
+                            src="https://icones.pro/wp-content/uploads/2021/05/icone-d-information-grise.png" alt=""
+                            class="h-5">Sobre</div>
+                </a>
+                <a href="/produtos/listar" class="text-yellow-400 hover:text-white transition text-lg w-full p-2 hover:bg-black rounded">
+                    <div class="flex gap-2 items-center"><img
+                            src="https://icones.pro/wp-content/uploads/2021/05/icone-de-panier-gris.png" alt=""
+                            class="h-5">Produtos</div>
+                </a>
+                <a href="/categorias/listar" class="text-yellow-400 hover:text-white transition text-lg w-full p-2 hover:bg-black rounded">
+                    <div class="flex gap-2 items-center"><img
+                            src="https://images.icon-icons.com/2483/PNG/512/document_category_icon_149943.png" alt=""
+                            class="h-5">Categorias</div>
+                </a>
+                <a href="/usuarios/listar" class="text-yellow-400 hover:text-white transition text-lg w-full p-2 hover:bg-black rounded">
+                    <div class="flex gap-2 items-center"><img
+                            src="https://images.icon-icons.com/2483/PNG/512/user_icon_149851.png" alt=""
+                            class="h-5">Usuarios</div>
+                </a>
+                
+                <a href="/admin/logout"
+                    class="mt-4 text-white bg-red-700 hover:bg-red-800 transition px-8 rounded-full py-2 uppercase w-full text-center">Sair</a>
+            </nav>
+            
+        </div>
     </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('navbar-menu');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    // O clique agora apenas alterna a visibilidade (hidden/flex)
+                    navMenu.classList.toggle('hidden');
+                    // Garante que o menu sempre apareça verticalmente
+                    navMenu.classList.toggle('flex'); 
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

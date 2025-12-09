@@ -14,7 +14,8 @@ const { Pool } = require('pg');
 
 const bd = new Pool(
     {
-        connectionString: "postgres://postgres.elcxgpnbbcrllvbryzzs:QDyFv2nWMuNMW4pq@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
+        connectionString: "postgres://postgres.elcxgpnbbcrllvbryzzs:QDyFv2nWMuNMW4pq@aws-1-sa-east-1.pooler.supabase.com:5432/postgres", 
+        max: 20
     }
 );
 

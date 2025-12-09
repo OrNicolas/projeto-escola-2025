@@ -22,8 +22,8 @@ app.use(session({
     }),
 
     secret: 'sesisenai', 
-    resave: false, 
-    saveUninitialized: false,
+    resave: true, 
+    saveUninitialized: true,
     cookie :{
         maxAge: 1000 * 60 * 60 * 24,
         secure: false
@@ -70,4 +70,3 @@ app.listen(porta, () => {
     console.log(`Servidor rodando na porta http://192.168.0.169:${porta} `);
 });
 
-module.exports = rotas;
