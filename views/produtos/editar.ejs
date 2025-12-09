@@ -29,35 +29,60 @@
                 class="space-y-6 p-8 rounded-xl shadow-2xl bg-gray-900 border border-gray-700">
 
                 <div class="space-y-1">
-                    <label for="nome" class="block text-sm font-medium text-gray-300">Nome Do Produto: (Arraste para o
-                        lado p/ ver o nome completo)</label>
+                    <label for="nome" class="block text-sm font-medium text-gray-300">Nome Do Produto:</label>
                     <input type="text" name="nome" value="<%= produto.nome %>" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="descricao" class="block text-sm font-medium text-gray-300">Descrição do Produto</label>
+                    <textarea name="descricao" rows="3"
+                        class="w-full p-3 rounded-lg border-2 border-gray-700 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 rounded-lg"><%= produto.descricao || '' %></textarea>
                 </div>
 
                 <div class="space-y-1">
                     <label for="preco" class="block text-sm font-medium text-gray-300">Preço:</label>
                     <input type="number" name="preco" value="<%= produto.preco %>" step="0.01" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2">
                 </div>
-
-                <div class="space-y-1">
-                    <label for="quantidade_estoque" class="block text-sm font-medium text-gray-300">Quantidade em
-                        Estoque:</label>
-                    <input type="number" name="quantidade_estoque" value="<%= produto.quantidade_estoque %>" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                
+                <div class="space-y-1"> 
+                    <label for="id_categoria" class="block text-sm font-medium text-gray-300">Categoria:</label>
+                    <select name="id_categoria" required
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2 text-gray-300"> 
+                        <option value="" class="text-white">Selecione a Categoria</option>
+                        <% for (let categoria of categorias) { %>
+                            <option value="<%= categoria.id_categoria %>" 
+                                <% if (produto.id_categoria == categoria.id_categoria) { %> selected <% } %>
+                            >
+                                <%= categoria.nome %> 
+                            </option>
+                        <% } %>
+                    </select>
                 </div>
-
+                <div class="space-y-1 p-4 bg-gray-800 rounded-lg border border-gray-700">
+                    <label class="block text-lg font-bold text-batman-yellow">Controle de Estoque</label>
+                    
+                    <p class="text-sm font-medium text-gray-300">Quantidade Atual em Estoque:</p>
+                    <p class="text-2xl font-extrabold text-white"><%= produto.quantidade_estoque %></p>
+                    
+                    <p class="text-xs text-gray-400 mt-2">
+                        A quantidade em estoque não pode ser alterada diretamente na edição. Use a função de movimentação para Entradas e Saídas.
+                    </p>
+            <a href="/produtos/<%= produto.id_produto %>/movimentacoes" class="mt-4 py-2 px-6 flex items-center justify-center rounded-lg bg-red-700 text-white font-bold shadow-xl hover:bg-red-600 transition duration-300">
+             Registrar Movimentação de Estoque
+            </a>
+                </div>
                 <div class="space-y-1">
                     <label for="estoque_minimo" class="block text-sm font-medium text-gray-300">Estoque Mínimo:</label>
                     <input type="number" name="estoque_minimo" value="<%= produto.estoque_minimo %>" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2">
                 </div>
 
                 <div class="space-y-1">
                     <label for="ativo" class="block text-sm font-medium text-gray-300">Status:</label>
                     <select name="ativo" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2 text-gray-300">
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2 text-gray-300">
                         <option value="TRUE" <% if (produto.ativo===true) { %> selected <% } %>>Ativo</option>
                         <option value="FALSE" <% if (produto.ativo===false) { %> selected <% } %>>Inativo</option>
                     </select>
@@ -66,7 +91,7 @@
                 <div class="space-y-1">
                     <label for="foto" class="block text-sm font-medium text-gray-300">URL da Foto:</label>
                     <input type="text" name="foto" value="<%= produto.foto %>"
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2">
+                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 border-gray-700 py-2">
 
                     <% if (produto.foto && produto.foto.length> 0) { %>
                         <div class="mt-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
@@ -74,21 +99,7 @@
                             <img src="<%= produto.foto %>" alt="Foto atual do produto"
                                 class="max-h-32 object-contain rounded-md border border-gray-600">
                         </div>
-                        <% } %>
-                </div>
-
-                <div class="space-y-1">
-                    <label for="id_categoria" class="block text-sm font-medium text-gray-300">Categoria:</label>
-                    <select name="id_categoria" required
-                        class="w-full p-3 rounded-lg border-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-batman-yellow focus:border-batman-yellow transition duration-150 solid rounded-2xl px-16 border-gray-700 py-2 text-gray-300">
-                        <option value="" class="text-white">Selecione a Categoria</option>
-                        <% for (let categoria of categorias) { %>
-                            <option value="<%= categoria.id_categoria %>" <% if
-                                (produto.id_categoria==categoria.id_categoria) { %> selected <% } %>><%= categoria.nome
-                                        %>
-                            </option>
-                            <% } %>
-                    </select>
+                    <% } %>
                 </div>
 
                 <div class="flex justify-end space-x-4 pt-4">

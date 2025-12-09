@@ -33,8 +33,8 @@
             <div
                 class="bg-gray-800 p-6 shadow-xl rounded-lg text-center border-l-4 border-yellow-400 transform hover:scale-105 transition duration-300">
                 <h4 class="text-gray-400 font-medium">Total de Movimentações</h4>
-                <p class="text-4xl font-extrabold text-yellow-400 mt-3">
-                    <span id="totalMovimentacoesGeral">--</span>
+                <p class="text-4xl font-extrabold text-yellow-400 mt-3" id="totalMovimentacoesGeral">
+                    <%= qMov %>
                 </p>
             </div>
 
@@ -42,23 +42,23 @@
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-gray-800 shadow-xl rounded-lg p-3">
-                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Total Categorias</p>
-                <div class="p-4">
+                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Produtos em Alerta por Categoria</p>
+                <div class="p-4 h-64">
                     <canvas id="TotalCategoriasGrafico"></canvas>
                 </div>
             </div>
 
             <div class="bg-gray-800 shadow-xl rounded-lg p-3">
-                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Total de produtos em estoque</p>
-                <div class="p-4">
+                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Top Produtos Abaixo do Mínimo</p>
+                <div class="p-4 h-64">
                     <canvas id="GraficoTotalProdutos"></canvas>
                 </div>
             </div>
 
             <div class="bg-gray-800 shadow-xl rounded-lg p-3">
-                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Total de Usuarios</p>
-                <div class="p-4">
-                    <canvas id="GraficoTotalUsuarios" class="max-h-64"></canvas>
+                <p class="bg-gray-900 text-yellow-400 p-3 rounded-t-lg font-semibold text-lg">Distribuição de Usuários</p>
+                <div class="p-4 h-64">
+                    <canvas id="GraficoTotalUsuarios"></canvas>
                 </div>
             </div>
         </section>
@@ -103,12 +103,16 @@
             </div>
         </section>
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        
         <script>
-            // Dados injetados do EJS — CORRIGIDO:
+            // Dados injetados do EJS
             const produtosBaixoEstoque = <%- JSON.stringify(produtosBaixoEstoque) %>;
             const totalUsuarios = <%= totalUsuarios %>;
             const totalProdutos = <%= totalProdutos %>;
             const totalCategorias = <%= totalCategorias %>;
+            // CORREÇÃO SECUNDÁRIA: Inicializar qMov corretamente com o valor de EJS
+            const qMov = <%= qMov %>; 
 
             function criarDadosUsuariosMock(total) {
                 const t = parseInt(total);
@@ -116,7 +120,8 @@
 
                 const admin = Math.max(1, Math.floor(t * 0.10));
                 const gerente = Math.max(1, Math.floor(t * 0.20));
-                const funcionario = t - admin - gerente;
+                // Certifica que a soma não ultrapasse o total
+                const funcionario = Math.max(0, t - admin - gerente); 
 
                 return {
                     labels: ['Administrador', 'Gerente', 'Estoquista'],
@@ -126,6 +131,7 @@
 
             function criarGraficoTotalCategorias() {
                 const ctxCategorias = document.getElementById('TotalCategoriasGrafico');
+                if (!ctxCategorias) return; // Evita erro se o canvas sumir
 
                 const contagemCategorias = produtosBaixoEstoque.reduce((acc, produto) => {
                     acc[produto.nome_categoria] = (acc[produto.nome_categoria] || 0) + 1;
@@ -135,6 +141,7 @@
                 const labels = Object.keys(contagemCategorias);
                 const dados = Object.values(contagemCategorias);
 
+                // Lógica de mock de categorias (mantida)
                 if (labels.length < 4) {
                     labels.push('Outras Categ.', 'Sem Estoque Mínimo');
                     dados.push(Math.round(totalCategorias / 3) || 2, Math.round(totalCategorias / 6) || 1);
@@ -150,13 +157,21 @@
 
                 new Chart(ctxCategorias, {
                     type: 'doughnut',
-                    data: { labels, datasets: [{ data: dados, backgroundColor: cores, borderColor: '#1f2937', borderWidth: 1 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e5e7eb' } } } }
+                    data: { 
+                        labels, 
+                        datasets: [{ data: dados, backgroundColor: cores, borderColor: '#1f2937', borderWidth: 1 }] 
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { position: 'right', labels: { color: '#e5e7eb' } } } 
+                    }
                 });
             }
 
             function criarGraficoTotalProdutos() {
                 const ctxProdutos = document.getElementById('GraficoTotalProdutos');
+                if (!ctxProdutos) return;
 
                 const topProdutosEmAlerta = produtosBaixoEstoque.slice(0, 5);
 
@@ -164,6 +179,7 @@
                 const estoqueAtual = topProdutosEmAlerta.map(p => p.quantidade_estoque);
                 const estoqueMinimo = topProdutosEmAlerta.map(p => p.estoque_minimo);
 
+                // Lógica de mock de produtos (mantida)
                 if (labels.length === 0) {
                     labels.push('Prod A', 'Prod B', 'Prod C');
                     estoqueAtual.push(5, 10, 3);
@@ -192,6 +208,7 @@
 
             function criarGraficoTotalUsuarios() {
                 const ctxUsuarios = document.getElementById('GraficoTotalUsuarios');
+                if (!ctxUsuarios) return;
 
                 const dadosUsuarios = criarDadosUsuariosMock(totalUsuarios);
 
@@ -217,10 +234,8 @@
             }
 
             function atualizarContadorMovimentacoes() {
-                const entradas = [];
-                const saidas = [];
-                const total = entradas.reduce((a,b)=>a+b,0) + saidas.reduce((a,b)=>a+b,0);
-                document.getElementById('totalMovimentacoesGeral').textContent = total;
+                // CORREÇÃO: Usar a variável qMov injetada do EJS
+                document.getElementById('totalMovimentacoesGeral').textContent = qMov; 
             }
 
             document.addEventListener('DOMContentLoaded', () => {
@@ -230,5 +245,8 @@
                 criarGraficoTotalUsuarios();
             });
         </script>
-
-        <%- include ('../includes/footer.ejs') %>
+        <style>
+            .h-64 { height: 16rem; }
+        </style>
+    </main>
+    <%- include ('../includes/footer.ejs') %>

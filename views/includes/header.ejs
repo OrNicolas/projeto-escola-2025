@@ -8,14 +8,14 @@
     </title>
     <link rel="stylesheet" href="./CSS/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" href="/CSS/style.css">
 
 </head>
 
 <body class="">
-   
+
     <header class="bg-black sticky top-0 z-50 shadow-xl p-4">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -23,15 +23,23 @@
                 <h1 class="text-2xl font-bold text-yellow-400 ml-2">BatPapel</h1>
             </div>
             <nav class="space-x-6">
-                <a href="/admin/dashboard" class="text-yellow-400 hover:text-white transition">Início</a>
-                <a href="/" class="text-yellow-400 hover:text-white transition">Sobre</a>
-                <a href="/produtos/listar" class="text-yellow-400 hover:text-white transition">Produtos</a>
-                <a href="/categorias/listar" class="text-yellow-400 hover:text-white transition">Categorias</a>
-                <a href="/usuarios/listar" class="text-yellow-400 hover:text-white transition">Usuarios</a>
-                <a href="/admin/logout" class="text-yellow-400 hover:text-white transition hover:bg-red-700 hover:text-black px-6 rounded-full py-2 m-6 uppercase">Sair</a>
+                <a href="/admin/dashboard" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="/img/pngegg.png" alt="" class="h-5 mt-0.5">Início</div></a></a>
+                <a href="/sobre" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="https://icones.pro/wp-content/uploads/2021/05/icone-d-information-grise.png" alt="" class="h-5 mt-0.5">Sobre</div></a>
+                <a href="/produtos/listar" class="text-yellow-400 hover:text-white transition inline-block"><div class="flex gap-1"><img src="https://icones.pro/wp-content/uploads/2021/05/icone-de-panier-gris.png" alt="" class="h-5 mt-0.5">Produtos</div></a>
+                <a href="/categorias/listar" class="text-yellow-400 hover:text-white transition inline-block">
+                    <div class="flex gap-1"><img
+                            src="https://images.icon-icons.com/2483/PNG/512/document_category_icon_149943.png" alt=""
+                            class="h-5 mt-0.5">Categorias</div>
+                </a>
+                <a href="/usuarios/listar" class="text-yellow-400 hover:text-white transition inline-block">
+                    <div class="flex gap-1"><img src="https://images.icon-icons.com/2483/PNG/512/user_icon_149851.png"
+                            alt="" class="h-5 mt-0.5">Usuarios</div>
+                </a>
+                <a href="/admin/logout"
+                    class="text-yellow-400 hover:text-white transition hover:bg-red-700 hover:text-black px-8 rounded-full py-2 mb-8 uppercase">Sair</a>
             </nav>
         </div>
-        
+
     </header>
 </body>
 

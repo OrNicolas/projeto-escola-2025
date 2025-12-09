@@ -1,128 +1,184 @@
+// 🔧 Importa Express e inicializa o Router para criar rotas separadas
 const express = require('express');
+
+// 🔧 Cria um agrupamento de rotas exclusivo para categorias
 const rotas = express.Router();
+
+// 🔧 Conexão com o banco de dados (PostgreSQL)
 const bd = require('../db');
 
+
+
+/* 📌 ROTA: GET /listar
+   ▶ Lista categorias com busca, filtro, ordenação e paginação*/
 rotas.get('/listar', async (req, res) => {
     try {
-        const ordem = req.query.ordem || 'id_categoria';
+
+        // 📌 Parâmetro de busca por nome
         const busca = req.query.busca || '';
-        const ativo = req.query.ativo;
-        const dados = await bd.query(`select * from categoria where nome ilike ${"'%" + busca + "%'"} ${ativo ? 'and ativo = true' : ''} order by ${ordem}`);
-        console.log(dados);
-        res.render('categorias/listar.ejs', { categoria: dados.rows });
-    }
-    catch (erro) {
-        console.error('Erro ao buscar produtos:', erro);
+
+        // 📌 Campo de ordenação (padrão: id_categoria)
+        const ordem = req.query.ordem || 'id_categoria';
+
+        // 📌 Filtro por ativo/inativo
+        const ativo = req.query.ativo || '';
+
+        // 📌 Página atual (para paginação)
+        const pg = Number(req.query.pg) || 1;
+
+        // 📌 Limite de itens por página
+        const limite = 4;
+
+        // 📌 Offset calculado para pular registros
+        const offset = (pg - 1) * limite;
+
+        // 📌 Query SQL que lista com COUNT total
+        const sql = `
+            SELECT *,
+                   COUNT(*) OVER() AS total_itens
+            FROM categoria
+            WHERE nome ILIKE $1
+            ${ativo !== '' ? "AND ativo = $4" : ""}
+            ORDER BY ${ordem}
+            LIMIT $2 OFFSET $3
+        `;
+
+        // 📌 Parâmetros da Query
+        const params = [`%${busca}%`, limite, offset];
+        if (ativo !== '') params.push(ativo);
+
+        // 📌 Executa a consulta
+        const dados = await bd.query(sql, params);
+
+        // 📌 Descobre quantidade total de itens
+        const totalItens = dados.rows.length > 0 ? dados.rows[0].total_itens : 0;
+
+        // 📌 Calcula número total de páginas
+        const totalPgs = Math.ceil(totalItens / limite);
+
+        // 📌 Renderiza página de listagem
+        res.render('categorias/listar.ejs', {
+            categoria: dados.rows,
+            totalPgs,
+            pgAtual: pg,
+            busca,
+            ordem,
+            ativo
+        });
+
+    } catch (erro) {
+        console.error('Erro ao buscar categorias:', erro);
         res.status(500).send('Erro ao buscar categorias');
     }
-})
+});
 
 
-// Assumindo que você está usando o express.Router e a conexão com o banco (bd)
-// const bd = require('./db/conexao'); // Exemplo: inclua a sua conexão aqui
 
-// Rota GET: Mostra o formulário de edição
+/* 📌 ROTA: GET /editar/:id
+   ▶ Busca uma categoria pelo ID e envia para edição */
 rotas.get('/editar/:id', async (req, res) => {
-    // 1. Obtém o ID da URL
+
+    // 📌 ID da categoria vindo da URL
     const id = req.params.id;
-    
-    // 2. Query SQL CORRIGIDA: Buscar da tabela 'categoria' pelo 'id_categoria'
+
+    // 📌 Query SQL que pega 1 categoria
     const sql = 'SELECT * FROM categoria WHERE id_categoria = $1';
-    
-    // 3. Executa a query
+
+    // 📌 Executa consulta
     const dados = await bd.query(sql, [id]);
 
-    // 4. CORREÇÃO: Pega o primeiro registro (a categoria) do array 'rows'
     const categoria = dados.rows[0]; 
 
-    // 5. Renderiza a view 'categorias/editar.ejs' e passa o objeto 'categoria'
-    // Se não encontrar, você pode adicionar um tratamento de erro (ex: 404)
     if (categoria) {
-        res.render('categorias/editar.ejs', { categoria: categoria });
+        res.render('categorias/editar.ejs', { categoria });
     } else {
         res.status(404).send('Categoria não encontrada!');
     }
 });
 
 
-rotas.get('/novo', async(req,res) =>{
-    const dadosCategorias = await bd.query('SELECT * from categoria where ativo = true');
-    
-    // Você não precisa de dados de produto para criar uma nova categoria, 
-    // então a consulta 'dadosProd' foi removida para otimização.
 
-    // Renderiza o template do formulário de Nova Categoria.
-    // ⚠️ Ajuste o caminho 'admin/categorias-novo.ejs' se o seu arquivo estiver em outro lugar.
+/* 📌 ROTA: GET /novo
+   ▶ Exibe formulário para criar uma nova categoria */
+rotas.get('/novo', async(req,res) =>{
+
+    // 📌 Busca categorias ativas (caso queira relacionamentos)
+    const dadosCategorias = await bd.query('SELECT * from categoria where ativo = true');
+
+    // 📌 Renderiza a página de criação
     res.render('categorias/novo.ejs', { categorias: dadosCategorias.rows });
 });
 
+
+
+/* 📌 ROTA: POST /novo
+   ▶ Salva uma nova categoria no banco de dados */
 rotas.post('/novo', async(req,res) =>{
+
+    // 📌 Nome enviado pelo formulário
     const nome = req.body.nome;
+
+    // 📌 Categoria nova sempre ativa inicialmente
     const ativo = true; 
+
+    // 📌 Validação simples
     if (!nome) {
         return res.status(400).send("O campo Nome da Categoria é obrigatório.");
     }
-    
+
+    // 📌 Query de inserção
     const sql = `
         INSERT INTO categoria (nome, ativo)
         VALUES ($1, $2)
     `;
     
-    // Executa a inserção
     await bd.query(sql, [nome, ativo]);
 
-    // Redireciona para a página de listagem de categorias
     res.redirect('/categorias/listar');
 });
 
 
 
-
-
-
-
-
-
-
-
-// Rota POST: Processa a submissão do formulário e salva no DB
+/* 📌 ROTA: POST /editar/:id
+   ▶ Atualiza uma categoria existente */
 rotas.post('/editar/:id', async (req, res) => {
-    // 1. Obter o ID da categoria a ser editada
+
+    // 📌 ID da categoria sendo atualizada
     const id = req.params.id;
-    
-    // 2. Obter os novos dados do corpo da requisição
+
+    // 📌 Dados enviados pelo formulário
     const nome = req.body.nome;
-    // O valor virá como a string 'TRUE' ou 'FALSE' do formulário
-    const ativo = req.body.ativo; 
-    
-    // 3. Query SQL para UPDATE (apenas nome e ativo)
+    const ativo = req.body.ativo;  // TRUE / FALSE
+
+    // 📌 Query SQL de atualização
     const sql = `UPDATE categoria 
                  SET nome=$1, ativo=$2
                  WHERE id_categoria=$3`;
                  
-    // O array de valores DEVE seguir a ordem dos placeholders na query ($1, $2, ...)
-    const valores = [
-        nome, 
-        ativo, 
-        id
-    ];
+    const valores = [nome, ativo, id];
 
     await bd.query(sql, valores);
     
-    // 4. Redireciona para a listagem de categorias
     res.redirect('/categorias/listar'); 
 });
 
 
 
+/* 📌 ROTA: POST /excluir/:id
+   ▶ Desativa uma categoria ao invés de excluir do banco */
 rotas.post('/excluir/:id', async (req, res) => {
+
+    // 📌 ID a ser desativado
     const id = req.params.id;
-    // Melhor forma pratica é desativar o item, não excluir
-    const sql = `UPDATE categoria set ativo = false where id_categoria = $1`;
-    await bd.query(sql, [id])
+
+    // 📌 Atualiza campo "ativo" para false
+    const sql = `UPDATE categoria SET ativo = false WHERE id_categoria = $1`;
+
+    await bd.query(sql, [id]);
+    
     res.redirect('/categorias/listar');
-})
-// module.exports = rotas; // Inclua esta linha no seu arquivo de rotas
+});
 
-
+/* 📌 Exporta este agrupamento de rotas */
 module.exports = rotas;
+

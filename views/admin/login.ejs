@@ -16,7 +16,8 @@
         <!-- Overlay escuro para melhorar contraste -->
         <div class="absolute inset-0 bg-black bg-opacity-60"></div>
 
-        <div class="relative max-w-md w-11/12 mx-auto p-8 bg-black bg-opacity-70 border border-yellow-500 rounded-lg shadow-[0_0_25px_#facc15] backdrop-blur-sm">
+        <div
+            class="relative max-w-md w-11/12 mx-auto p-8 bg-black bg-opacity-70 border border-yellow-500 rounded-lg shadow-[0_0_25px_#facc15] backdrop-blur-sm">
 
             <h1 class="text-4xl font-extrabold text-yellow-400 mb-6 tracking-wider drop-shadow-lg">
                 Login BatPapel
@@ -44,11 +45,11 @@
 
             <div class="text-center mt-4">
                 <!-- CORREÇÃO: Usar um operador ternário ou 'typeof' para verificar se a variável existe e não é null/undefined -->
-                <% if (typeof mensagem !== 'undefined' && mensagem) { %>
+                <% if (typeof mensagem !=='undefined' && mensagem) { %>
                     <p class="text-red-400 text-sm font-semibold drop-shadow">
                         <%= mensagem %>
                     </p>
-                <% } %>
+                    <% } %>
             </div>
         </div>
     </section>

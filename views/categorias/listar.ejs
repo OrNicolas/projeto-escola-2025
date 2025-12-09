@@ -104,8 +104,19 @@
                             </div>
                             <% } %>
             </section>
-
-
         </div>
+
+        <div class="paginacao">
+            <% if (pgAtual> 1) { %>
+                <a href="/categorias/listar?pg=<%= pgAtual - 1 %>" class="btn-paginar">Anterior</a>
+                <% } %>
+
+                    <span>Página <%= pgAtual %> de <%= totalPgs %></span>
+
+                    <% if (pgAtual < totalPgs) { %>
+                        <a href="/categorias/listar?pg=<%= pgAtual + 1 %>" class="btn-paginar">Próxima</a>
+                        <% } %>
+        </div>
+
     </main>
     <%- include ('../includes/footer.ejs') %>
